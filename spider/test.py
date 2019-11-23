@@ -1,15 +1,8 @@
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-from urllib.parse import quote
-from pyquery import PyQuery as pq
-from selenium.webdriver.common.action_chains import ActionChains
 import pymongo
 import time
-from utils.configwusong import *
+from spider.utils.configwusong import *
 from xdaili import Xdaili
 class Products(object):
     def __init__(self):
