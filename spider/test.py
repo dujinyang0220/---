@@ -3,7 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 import pymongo
 import time
 from spider.utils.configwusong import *
-from xdaili import Xdaili
+#from xdaili import Xdaili
 class Products(object):
     def __init__(self):
         """
@@ -14,7 +14,7 @@ class Products(object):
         self.db = self.client[MONGO_DB]
         self.collection = self.db[MONGO_COLLECTION]
         # 代理配置
-        self.auth = Xdaili().auth()
+#        self.auth = Xdaili().auth()
         self.chrome_options = webdriver.ChromeOptions()
         self.chrome_options.add_argument('--start-maximized')
         self.chrome_options.add_argument('--headless')
@@ -24,7 +24,7 @@ class Products(object):
         self.driver.maximize_window()
         #    self.browser = webdriver.Chrome(chrome_options=self.chrome_options)
         self.wait = WebDriverWait(self.driver, TIMEOUT)
-    def spider(self):
+    def spider(self,key):
      self.driver.get(URL)
      print("@")
      while 1:
@@ -34,7 +34,7 @@ class Products(object):
                 self.driver.find_element_by_xpath("//input[@id='username']").click()
                 self.driver.find_element_by_xpath("//input[@id='username']").clear()
                 self.driver.find_element_by_xpath("//input[@id='username']").send_keys(USERNAME)
-                time.sleep(3)
+                time.sleep(1)
                 self.driver.find_element_by_xpath("//input[@id='password']").click()
                 self.driver.find_element_by_xpath("//input[@id='password']").clear()
                 self.driver.find_element_by_xpath("//input[@id='password']").send_keys(PASSWORD)
@@ -42,7 +42,7 @@ class Products(object):
                 time.sleep(5)
                 self.driver.find_element_by_xpath("//input[@placeholder='输入“?”定位到当事人、律师、法官、法院、标题、法院观点']").click()
                 self.driver.find_element_by_xpath("//input[@placeholder='输入“?”定位到当事人、律师、法官、法院、标题、法院观点']").clear()
-                self.driver.find_element_by_xpath("//input[@placeholder='输入“?”定位到当事人、律师、法官、法院、标题、法院观点']").send_keys("山西")
+                self.driver.find_element_by_xpath("//input[@placeholder='输入“?”定位到当事人、律师、法官、法院、标题、法院观点']").send_keys(key)
                 self.driver.find_element_by_class_name("search-box-btn").click()
                 time.sleep(3)
                 #
@@ -98,36 +98,19 @@ class Products(object):
         :param result: 抓取的数据
         :return: None
         """
-        print("到mongo了")
         try:
             if self.db[MONGO_COLLECTION].insert(result):
                 print('存储到MONGODB成功', result)
         except Exception:
             print('存储到MONGODB失败', result)
-    def main(self):
-        self.spider()
+    def main(self,keyword):
+        self.spider(keyword)
 if __name__ == '__main__':
-    start=time.clock()
-    taobao_product = Products()
-    taobao_product.main()
+    start=time.process_time()
+   # print('请输入关键词：')
+    str = input("请输入关键词：")
+    law_product = Products()
+    law_product.main(str)
     end=time.process_time()
     print('耗时：' + str(end - start))
 
-    # def spider2(self):
-    #     driver = webdriver.Chrome()
-    #     driver.get(
-    #         "https://www.itslaw.com/search?searchMode=judgements&sortType=1&conditions=searchWord%2B%E6%B3%95%E5%BE%8B%2B1%2B%E6%B3%95%E5%BE%8B&searchView=text")
-    #     print("@")
-    #     while 1:
-    #         start = time.clock()
-    #         try:
-    #             #  driver.find_elements_by_class_name("judgements")
-    #             # result = driver.xpath('//(@class='judgements')')
-    #             driver.find_element_by_xpath("//div[@class='judgements']/div[1]/div[2]/h3/a").click()
-    #             time.sleep(9)
-    #             print('已定位到元素')
-    #             end = time.process_time()
-    #             break
-    #         except:
-    #             print("还未定位到元素!")
-    #     print('定位耗费时间：' + str(end - start))
