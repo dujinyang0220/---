@@ -24,17 +24,16 @@ class Products(object):
         self.driver.maximize_window()
         #    self.browser = webdriver.Chrome(chrome_options=self.chrome_options)
         self.wait = WebDriverWait(self.driver, TIMEOUT)
+
     def spider(self,key):
      self.driver.get(URL)
      print("@")
      while 1:
             try:
                 self.driver.find_element_by_class_name("login-btn").click()
-                time.sleep(1)
                 self.driver.find_element_by_xpath("//input[@id='username']").click()
                 self.driver.find_element_by_xpath("//input[@id='username']").clear()
                 self.driver.find_element_by_xpath("//input[@id='username']").send_keys(USERNAME)
-                time.sleep(1)
                 self.driver.find_element_by_xpath("//input[@id='password']").click()
                 self.driver.find_element_by_xpath("//input[@id='password']").clear()
                 self.driver.find_element_by_xpath("//input[@id='password']").send_keys(PASSWORD)
@@ -45,17 +44,17 @@ class Products(object):
                 self.driver.find_element_by_xpath("//input[@placeholder='输入“?”定位到当事人、律师、法官、法院、标题、法院观点']").send_keys(key)
                 self.driver.find_element_by_class_name("search-box-btn").click()
                 time.sleep(3)
-                #
-                # j =1
-                # while j<5:
-                #     element = self.driver.find_element_by_xpath("//button[@class='view-more ng-scope']")
-                #     element.click()
-                #     time.sleep(3)
-                #     j=j+1
+
+                j =1
+                for j in range(4):
+                    element = self.driver.find_element_by_xpath("//button[@class='view-more ng-scope']")
+                    element.click()
+                    time.sleep(3)
+
                 lit = self.driver.find_elements_by_class_name("judgement ng-scope")
                 lis = self.driver.find_elements_by_xpath('//div[@class = "judgements"]/div[@class="judgement ng-scope"]')
+
                 for i in range(len(lis)):
-              #  for i in range(2):
                     print("开始点击")
                     i=i+1
                     div_str = '//div[@class="judgements"]/div[{}]/div[2]/h3/a'.format(i)
@@ -103,14 +102,18 @@ class Products(object):
                 print('存储到MONGODB成功', result)
         except Exception:
             print('存储到MONGODB失败', result)
+
     def main(self,keyword):
-        self.spider(keyword)
-if __name__ == '__main__':
-    start=time.process_time()
-   # print('请输入关键词：')
-    str = input("请输入关键词：")
-    law_product = Products()
-    law_product.main(str)
-    end=time.process_time()
-    print('耗时：' + str(end - start))
+         self.spider(keyword)
+
+
+
+# if __name__ == '__main__':
+#     start=time.process_time()
+#    # print('请输入关键词：')
+#     str = input("请输入关键词：")
+#     law_product = Products()
+#     law_product.main(str)
+#     end=time.process_time()
+#     print('耗时：' + str(end - start))
 
