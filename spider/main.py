@@ -1,5 +1,5 @@
 #主函数
-from test import Products
+from spider.test import Products
 import time
 start = time.process_time()
 # print('请输入关键词：')
