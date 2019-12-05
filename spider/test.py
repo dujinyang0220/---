@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
-#import pymongo
+import pymongo
 import time
 from spider.utils.configwusong import *
 #from xdaili import Xdaili
@@ -10,9 +10,9 @@ class Products(object):
         初始化
         """
         # 数据库配置
-#        self.client = pymongo.MongoClient(MONGO_URL)
-#        self.db = self.client[MONGO_DB]
-#        self.collection = self.db[MONGO_COLLECTION]
+        self.client = pymongo.MongoClient(MONGO_URL)
+        self.db = self.client[MONGO_DB]
+        self.collection = self.db[MONGO_COLLECTION]
         # 代理配置
 #        self.auth = Xdaili().auth()
         self.chrome_options = webdriver.ChromeOptions()
@@ -30,9 +30,7 @@ class Products(object):
      print("@")
      while 1:
             try:
-                time.sleep(3)
                 self.driver.find_element_by_class_name("login-btn").click()
-                time.sleep(3)
                 self.driver.find_element_by_xpath("//input[@id='username']").click()
                 self.driver.find_element_by_xpath("//input[@id='username']").clear()
                 self.driver.find_element_by_xpath("//input[@id='username']").send_keys(USERNAME)

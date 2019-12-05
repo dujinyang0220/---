@@ -131,26 +131,97 @@ def logout(request):
 def search(request):
     if request.method == "POST":
         content = request.POST.get("content")
-        print(content)
-        print('我好了')
         from selenium import webdriver
-        import  time
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--start-maximized')
+        from selenium.webdriver.chrome.options import Options
+        import time
+
+      #  chrome_options = webdriver.ChromeOptions()
+     #   chrome_options.add_argument('--start-maximized')
+        # 无头模式启动
+    #    chrome_options.add_argument('--headless')
+        # 谷歌文档提到需要加上这个属性来规避bug
+   #     chrome_options.add_argument('--disable-gpu')
+      #  plugin_file = './spider/utils/proxy_auth_plugin.zip'
+     #   chrome_options.add_extension(plugin_file)
+
+        chrome_options = Options()
+        # 无头模式启动
         chrome_options.add_argument('--headless')
-        plugin_file = './utils/proxy_auth_plugin.zip'
-      #  chrome_options.add_extension(self.plugin_file)
-        driver = webdriver.Chrome()
-        driver.maximize_window()
+        # 谷歌文档提到需要加上这个属性来规避bug
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--start-maximized')
+        # 初始化实例
+        driver = webdriver.Chrome(options=chrome_options)
         #    self.browser = webdriver.Chrome(chrome_options=self.chrome_options)
        # wait = WebDriverWait(driver, TIMEOUT)
-        url="https://tieba.baidu.com/index.html?traceid=#"
+        url="https://www.itslaw.com/search?searchMode=judgements&sortType=1&conditions=searchWord%2B%E6%B3%95%E5%BE%8B%2B1%2B%E6%B3%95%E5%BE%8B&searchView=text"
         driver.get(url)
         #点击登录
-        driver.find_element_by_xpath('//div[@class="u_menu_item"]/a').click()
-        time.sleep(1)
-        driver.find_element_by_class_name["tang-pass-footerBarULogin"].click()
-        time.sleep(1)
-        driver.find_element_by_id("TANGRAM_PSP_10_userName").send_keys(content)
+        while 1:
+            try:
+                driver.find_element_by_class_name("login-btn").click()
+                print ("输入密码ing")
+                time.sleep(2)
+                driver.find_element_by_xpath("//input[@id='username']").click()
+                driver.find_element_by_xpath("//input[@id='username']").clear()
+                driver.find_element_by_xpath("//input[@id='username']").send_keys('13667272850')
+                driver.find_element_by_xpath("//input[@id='password']").click()
+                driver.find_element_by_xpath("//input[@id='password']").clear()
+                driver.find_element_by_xpath("//input[@id='password']").send_keys('mssjwow123')
+                driver.find_element_by_class_name("submit").click()
+                time.sleep(2)
+
+                driver.find_element_by_xpath("//input[@placeholder='输入“?”定位到当事人、律师、法官、法院、标题、法院观点']").click()
+                print ("搜索关键词ing")
+                driver.find_element_by_xpath("//input[@placeholder='输入“?”定位到当事人、律师、法官、法院、标题、法院观点']").clear()
+                driver.find_element_by_xpath("//input[@placeholder='输入“?”定位到当事人、律师、法官、法院、标题、法院观点']").send_keys(content)
+                driver.find_element_by_class_name("search-box-btn").click()
+                time.sleep(3)
+
+                j = 1
+                for j in range(5):
+                 element = driver.find_element_by_xpath("//button[@class='view-more ng-scope']")
+                 element.click()
+                 time.sleep(2)
+
+                lit = driver.find_elements_by_class_name("judgement ng-scope")
+                lis = driver.find_elements_by_xpath('//div[@class = "judgements"]/div[@class="judgement ng-scope"]')
+
+                for i in range(len(lis)):
+                    print("开始点击")
+                    i=i+1
+                    print("在这里")
+                    time.sleep(3)
+                    div_str = '//div[@class="judgements"]/div[{}]/div[2]/h3/a'.format(i)
+                    driver.find_element_by_xpath(div_str).click()
+                    print("点击完成")
+                    all_h = driver.window_handles
+                    driver.switch_to.window(all_h[1])
+                    h2 = driver.current_window_handle
+                    print('已定位到元素')
+                    time.sleep(1)
+                    try:
+                      wenshu = driver.find_element_by_xpath('//section[@class="paragraphs ng-isolate-scope"]').text
+                      wenshu=wenshu[0:10000]
+                      f = open('./data/train.txt', 'a')
+                      f.write(wenshu)
+                      f.write('\n')
+                      f.close()
+                      print ("成功")
+                    except:
+                        print ("失败")
+                    driver.close()
+                    driver.switch_to.window(all_h[0])
+
+                driver.close()
+                reslut = "成功"
+                print('关闭')
+                #end = time.process_time()
+                break
+            except:
+                print("还未定位到元素!")
+
+
+
 
     return render(request, "login/test.html", locals())
