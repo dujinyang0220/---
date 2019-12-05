@@ -135,15 +135,29 @@ def search(request):
         from selenium.webdriver.chrome.options import Options
         import time
 
-      #  chrome_options = webdriver.ChromeOptions()
-     #   chrome_options.add_argument('--start-maximized')
-        # 无头模式启动
-    #    chrome_options.add_argument('--headless')
-        # 谷歌文档提到需要加上这个属性来规避bug
-   #     chrome_options.add_argument('--disable-gpu')
-      #  plugin_file = './spider/utils/proxy_auth_plugin.zip'
-     #   chrome_options.add_extension(plugin_file)
+        # #正常模式
+        # chrome_options = webdriver.ChromeOptions()
+        # chrome_options.add_argument('--start-maximized')
+        # #无头模式启动
+        # chrome_options.add_argument('--headless')
+        # #谷歌文档提到需要加上这个属性来规避bug
+        # chrome_options.add_argument('--disable-gpu')
+        # plugin_file = './spider/utils/proxy_auth_plugin.zip'
+        # chrome_options.add_extension(plugin_file)
 
+        #firefox-headless
+        # from selenium import webdriver
+        # options = webdriver.FirefoxOptions()
+        # options.set_headless()
+        # # options.add_argument('-headless')
+        # options.add_argument('--disable-gpu')
+        # driver = webdriver.Firefox(firefox_options=options)
+        # driver.get('http://httpbin.org/user-agent')
+        # driver.get_screenshot_as_file('test.png')
+        # driver.close()
+
+
+        #chrome-headless
         chrome_options = Options()
         # 无头模式启动
         chrome_options.add_argument('--headless')
