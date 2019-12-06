@@ -193,10 +193,7 @@ def search(request):
                 time.sleep(3)
 
                 j = 1
-                for j in range(5):
-                 element = driver.find_element_by_xpath("//button[@class='view-more ng-scope']")
-                 element.click()
-                 time.sleep(2)
+
 
                 lit = driver.find_elements_by_class_name("judgement ng-scope")
                 lis = driver.find_elements_by_xpath('//div[@class = "judgements"]/div[@class="judgement ng-scope"]')
@@ -205,7 +202,6 @@ def search(request):
                     print("开始点击")
                     i=i+1
                     print("在这里")
-                    time.sleep(3)
                     div_str = '//div[@class="judgements"]/div[{}]/div[2]/h3/a'.format(i)
                     driver.find_element_by_xpath(div_str).click()
                     print("点击完成")
@@ -213,7 +209,6 @@ def search(request):
                     driver.switch_to.window(all_h[1])
                     h2 = driver.current_window_handle
                     print('已定位到元素')
-                    time.sleep(1)
                     try:
                       wenshu = driver.find_element_by_xpath('//section[@class="paragraphs ng-isolate-scope"]').text
                       wenshu=wenshu[0:10000]
@@ -228,7 +223,7 @@ def search(request):
                     driver.switch_to.window(all_h[0])
 
                 driver.close()
-                reslut = "成功"
+                result = "ok"
                 print('关闭')
                 #end = time.process_time()
                 break

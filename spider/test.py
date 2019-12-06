@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
-import pymongo
+#import pymongo
 import time
 from spider.utils.configwusong import *
 #from xdaili import Xdaili
