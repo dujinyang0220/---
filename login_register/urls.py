@@ -25,4 +25,5 @@ urlpatterns = [
     path('logout/', views.logout),
     path('captcha/', include('captcha.urls')),
     path('search/', views.search),
+    path('read/', views.read, name='read')
 ]

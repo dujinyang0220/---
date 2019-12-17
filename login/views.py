@@ -7,6 +7,7 @@ import hashlib
 from spider.test import Products
 import time
 from django.http.response import JsonResponse
+from login.models import Keyword,CrawResult,Question,Answer
 
 # Create your views here.
 def hash_code(s, salt='login_register'):  # 加点盐
@@ -131,6 +132,11 @@ def logout(request):
 def search(request):
     if request.method == "POST":
         content = request.POST.get("content")
+
+        # 存储到数据库
+        print(content)
+        models.Keyword.objects.create(keyword=content)
+
         from selenium import webdriver
         from selenium.webdriver.chrome.options import Options
         import time
@@ -230,7 +236,20 @@ def search(request):
             except:
                 print("还未定位到元素!")
 
+    return render(request, "login/search.html", locals())
 
-
-
-    return render(request, "login/test.html", locals())
+def read(request):
+    question = request.POST.get("question")
+    if question:
+        # UserModel.objects.create()  # 增
+        # UserModel.objects.get()  # 查（只查看一条数据）
+        # UserModel.objects.filter()  # 查看多条数据
+        # UserModel.objects.filter().update()  # 改
+        # UserModel.objects.filter().delete()  # 删
+        # QsModel.objects.create(
+        #     question = question,)
+        result = "OK"
+    else:
+        result = "Not OK"
+    print(question)
+    return render(request, "login/read.html", locals())

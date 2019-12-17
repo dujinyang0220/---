@@ -75,8 +75,18 @@ WSGI_APPLICATION = 'login_register.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 数据库引擎（sqlite3/mysql/oracle等）
+        'ENGINE': 'django.db.backends.mysql',
+        # 数据库名字
+        'NAME': 'lawmrc',
+        # 连接数据库的用户名
+        'USER': 'root',
+        # 连接数据库的密码
+        'PASSWORD': 'root',
+        # 数据库的主机地址
+        'HOST': '127.0.0.1',
+        # 数据库的端口号
+        'PORT': '3306'
     }
 }
 

@@ -22,3 +22,25 @@ class User(models.Model):
         ordering = ['-c_time']
         verbose_name = '用户'
         verbose_name_plural = '用户'
+
+class Keyword(models.Model):
+    # 1.id：int类型，是自增长的,主键
+    key_id = models.AutoField(primary_key=True)
+    # 2.name：varchar(100)，图书的名字,不能为空
+    keyword = models.CharField(max_length=100, null=False)
+
+class CrawResult(models.Model):
+    craw_id = models.AutoField(primary_key=True)
+    passage_name = models.CharField(max_length=100, null=False)
+    craw_fk = models.ForeignKey('Keyword',to_field='key_id',on_delete='CASCADE')
+
+class Question(models.Model):
+    question_id = models.AutoField(primary_key=True)
+    question = models.CharField(max_length=255, null=False)
+    question_fk = models.ForeignKey('Keyword', to_field='key_id', on_delete='CASCADE')
+
+class Answer(models.Model):
+    answer_id = models.AutoField(primary_key=True)
+    answer = models.TextField()
+    answer_fk1 = models.ForeignKey('Question', to_field='question_id', on_delete='CASCADE')
+    answer_fk2 = models.ForeignKey('CrawResult', to_field='craw_id', on_delete='CASCADE')
